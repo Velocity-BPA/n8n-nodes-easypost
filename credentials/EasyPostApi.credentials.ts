@@ -26,6 +26,13 @@ export class EasyPostApi implements ICredentialType {
 			required: true,
 			description: 'Your EasyPost API key. Test keys start with EZTEST, Production keys start with EZPROD.',
 		},
+		{
+			displayName: 'API Base URL',
+			name: 'baseUrl',
+			type: 'string',
+			default: 'https://api.easypost.com/v2',
+			description: 'Base URL for the EasyPost API',
+		},
 	];
 
 	authenticate: IAuthenticateGeneric = {
