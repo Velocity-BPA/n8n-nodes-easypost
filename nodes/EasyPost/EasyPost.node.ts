@@ -122,6 +122,10 @@ export class EasyPost implements INodeType {
 						value: 'customsItem',
 					},
 					{
+						name: 'Event',
+						value: 'event',
+					},
+					{
 						name: 'Insurance',
 						value: 'insurance',
 					},
@@ -276,13 +280,13 @@ export class EasyPost implements INodeType {
 							(body.shipment as IDataObject).carrier_accounts = accounts;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/shipments', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/shipments', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 						validateShipmentId(shipmentId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/shipments/${shipmentId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/shipments/${shipmentId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -309,7 +313,7 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/shipments', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/shipments', {}, qs)) as any;
 							responseData = (response.shipments as IDataObject[]) || [];
 						}
 					}
@@ -321,12 +325,12 @@ export class EasyPost implements INodeType {
 						validateRateId(rateId);
 
 						const body = { rate: { id: rateId } };
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/shipments/${shipmentId}/buy`,
 							body,
-						);
+						)) as any;
 					}
 
 					if (operation === 'buyWithRate') {
@@ -383,7 +387,7 @@ export class EasyPost implements INodeType {
 							(body.shipment as IDataObject).options = options;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/shipments', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/shipments', body)) as any;
 					}
 
 					if (operation === 'convertLabel') {
@@ -392,12 +396,12 @@ export class EasyPost implements INodeType {
 						validateShipmentId(shipmentId);
 
 						const body = { file_format: labelFormat };
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/shipments/${shipmentId}/label`,
 							body,
-						);
+						)) as any;
 					}
 
 					if (operation === 'insure') {
@@ -406,32 +410,32 @@ export class EasyPost implements INodeType {
 						validateShipmentId(shipmentId);
 
 						const body = { amount: amount.toString() };
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/shipments/${shipmentId}/insure`,
 							body,
-						);
+						)) as any;
 					}
 
 					if (operation === 'refund') {
 						const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 						validateShipmentId(shipmentId);
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/shipments/${shipmentId}/refund`,
-						);
+						)) as any;
 					}
 
 					if (operation === 'regenerateRates') {
 						const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 						validateShipmentId(shipmentId);
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/shipments/${shipmentId}/rerate`,
-						);
+						)) as any;
 					}
 				}
 
@@ -473,13 +477,13 @@ export class EasyPost implements INodeType {
 							body.verify_strict = ['delivery'];
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/addresses', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/addresses', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const addressId = this.getNodeParameter('addressId', i) as string;
 						validateAddressId(addressId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/addresses/${addressId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/addresses/${addressId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -504,7 +508,7 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/addresses', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/addresses', {}, qs)) as any;
 							responseData = (response.addresses as IDataObject[]) || [];
 						}
 					}
@@ -512,11 +516,11 @@ export class EasyPost implements INodeType {
 					if (operation === 'verify') {
 						const addressId = this.getNodeParameter('addressId', i) as string;
 						validateAddressId(addressId);
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/addresses/${addressId}/verify`,
-						);
+						)) as any;
 					}
 				}
 
@@ -540,13 +544,13 @@ export class EasyPost implements INodeType {
 							};
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/parcels', { parcel });
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/parcels', { parcel })) as any;
 					}
 
 					if (operation === 'get') {
 						const parcelId = this.getNodeParameter('parcelId', i) as string;
 						validateParcelId(parcelId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/parcels/${parcelId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/parcels/${parcelId}`)) as any;
 					}
 				}
 
@@ -556,7 +560,7 @@ export class EasyPost implements INodeType {
 						const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 						validateShipmentId(shipmentId);
 
-						const response = await easyPostApiRequest.call(this, 'GET', `/shipments/${shipmentId}`);
+						const response = (await easyPostApiRequest.call(this, 'GET', `/shipments/${shipmentId}`)) as any;
 						let rates = (response.rates as IDataObject[]) || [];
 
 						const filters = this.getNodeParameter('filters', i, {}) as IDataObject;
@@ -578,11 +582,11 @@ export class EasyPost implements INodeType {
 						const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 						validateShipmentId(shipmentId);
 
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/shipments/${shipmentId}/smartrate`,
-						);
+						)) as any;
 					}
 				}
 
@@ -600,13 +604,13 @@ export class EasyPost implements INodeType {
 							(body.tracker as IDataObject).carrier = carrier;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/trackers', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/trackers', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const trackerId = this.getNodeParameter('trackerId', i) as string;
 						validateTrackerId(trackerId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/trackers/${trackerId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/trackers/${trackerId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -633,7 +637,7 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/trackers', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/trackers', {}, qs)) as any;
 							responseData = (response.trackers as IDataObject[]) || [];
 						}
 					}
@@ -649,12 +653,12 @@ export class EasyPost implements INodeType {
 							const shipmentId = this.getNodeParameter('shipmentId', i) as string;
 							validateShipmentId(shipmentId);
 
-							responseData = await easyPostApiRequest.call(
+							responseData = (await easyPostApiRequest.call(
 								this,
 								'POST',
 								`/shipments/${shipmentId}/insure`,
 								{ amount: amount.toString() },
-							);
+							)) as any;
 						} else {
 							const body: IDataObject = {
 								insurance: {
@@ -685,13 +689,13 @@ export class EasyPost implements INodeType {
 								(body.insurance as IDataObject).reference = additionalOptions.reference;
 							}
 
-							responseData = await easyPostApiRequest.call(this, 'POST', '/insurances', body);
+							responseData = (await easyPostApiRequest.call(this, 'POST', '/insurances', body)) as any;
 						}
 					}
 
 					if (operation === 'get') {
 						const insuranceId = this.getNodeParameter('insuranceId', i) as string;
-						responseData = await easyPostApiRequest.call(this, 'GET', `/insurances/${insuranceId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/insurances/${insuranceId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -716,18 +720,18 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/insurances', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/insurances', {}, qs)) as any;
 							responseData = (response.insurances as IDataObject[]) || [];
 						}
 					}
 
 					if (operation === 'refund') {
 						const insuranceId = this.getNodeParameter('insuranceId', i) as string;
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/insurances/${insuranceId}/refund`,
-						);
+						)) as any;
 					}
 				}
 
@@ -771,16 +775,16 @@ export class EasyPost implements INodeType {
 							(body.customs_info as IDataObject).eel_pfc = eelPfc;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/customs_infos', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/customs_infos', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const customsInfoId = this.getNodeParameter('customsInfoId', i) as string;
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/customs_infos/${customsInfoId}`,
-						);
+						)) as any;
 					}
 				}
 
@@ -810,16 +814,16 @@ export class EasyPost implements INodeType {
 							(body.customs_item as IDataObject).currency = additionalOptions.currency;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/customs_items', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/customs_items', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const customsItemId = this.getNodeParameter('customsItemId', i) as string;
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/customs_items/${customsItemId}`,
-						);
+						)) as any;
 					}
 				}
 
@@ -839,13 +843,13 @@ export class EasyPost implements INodeType {
 							(body.batch as IDataObject).shipments = ids;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/batches', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/batches', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const batchId = this.getNodeParameter('batchId', i) as string;
 						validateBatchId(batchId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/batches/${batchId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/batches/${batchId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -870,7 +874,7 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/batches', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/batches', {}, qs)) as any;
 							responseData = (response.batches as IDataObject[]) || [];
 						}
 					}
@@ -881,12 +885,12 @@ export class EasyPost implements INodeType {
 						validateBatchId(batchId);
 
 						const ids = shipmentIds.split(',').map((id) => ({ id: id.trim() }));
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/batches/${batchId}/add_shipments`,
 							{ shipments: ids },
-						);
+						)) as any;
 					}
 
 					if (operation === 'removeShipments') {
@@ -895,18 +899,18 @@ export class EasyPost implements INodeType {
 						validateBatchId(batchId);
 
 						const ids = shipmentIds.split(',').map((id) => ({ id: id.trim() }));
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/batches/${batchId}/remove_shipments`,
 							{ shipments: ids },
-						);
+						)) as any;
 					}
 
 					if (operation === 'buy') {
 						const batchId = this.getNodeParameter('batchId', i) as string;
 						validateBatchId(batchId);
-						responseData = await easyPostApiRequest.call(this, 'POST', `/batches/${batchId}/buy`);
+						responseData = (await easyPostApiRequest.call(this, 'POST', `/batches/${batchId}/buy`)) as any;
 					}
 
 					if (operation === 'createScanForm') {
@@ -914,12 +918,12 @@ export class EasyPost implements INodeType {
 						const fileFormat = this.getNodeParameter('fileFormat', i, 'PDF') as string;
 						validateBatchId(batchId);
 
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/batches/${batchId}/scan_form`,
 							{ file_format: fileFormat },
-						);
+						)) as any;
 					}
 				}
 
@@ -929,14 +933,14 @@ export class EasyPost implements INodeType {
 						const shipmentIds = this.getNodeParameter('shipmentIds', i) as string;
 						const ids = shipmentIds.split(',').map((id) => ({ id: id.trim() }));
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/scan_forms', {
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/scan_forms', {
 							shipments: ids,
-						});
+						})) as any;
 					}
 
 					if (operation === 'get') {
 						const scanFormId = this.getNodeParameter('scanFormId', i) as string;
-						responseData = await easyPostApiRequest.call(this, 'GET', `/scan_forms/${scanFormId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/scan_forms/${scanFormId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
@@ -961,7 +965,7 @@ export class EasyPost implements INodeType {
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
 							qs.page_size = limit;
-							const response = await easyPostApiRequest.call(this, 'GET', '/scan_forms', {}, qs);
+							const response = (await easyPostApiRequest.call(this, 'GET', '/scan_forms', {}, qs)) as any;
 							responseData = (response.scan_forms as IDataObject[]) || [];
 						}
 					}
@@ -1007,13 +1011,13 @@ export class EasyPost implements INodeType {
 							(body.pickup as IDataObject).is_account_address = additionalOptions.isAccountAddress;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/pickups', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/pickups', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const pickupId = this.getNodeParameter('pickupId', i) as string;
 						validatePickupId(pickupId);
-						responseData = await easyPostApiRequest.call(this, 'GET', `/pickups/${pickupId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/pickups/${pickupId}`)) as any;
 					}
 
 					if (operation === 'buy') {
@@ -1022,20 +1026,20 @@ export class EasyPost implements INodeType {
 						const service = this.getNodeParameter('service', i) as string;
 						validatePickupId(pickupId);
 
-						responseData = await easyPostApiRequest.call(this, 'POST', `/pickups/${pickupId}/buy`, {
+						responseData = (await easyPostApiRequest.call(this, 'POST', `/pickups/${pickupId}/buy`, {
 							carrier,
 							service,
-						});
+						})) as any;
 					}
 
 					if (operation === 'cancel') {
 						const pickupId = this.getNodeParameter('pickupId', i) as string;
 						validatePickupId(pickupId);
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'POST',
 							`/pickups/${pickupId}/cancel`,
-						);
+						)) as any;
 					}
 				}
 
@@ -1068,27 +1072,27 @@ export class EasyPost implements INodeType {
 							(body.carrier_account as IDataObject).test_credentials = testCreds;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/carrier_accounts', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/carrier_accounts', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const carrierAccountId = this.getNodeParameter('carrierAccountId', i) as string;
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'GET',
 							`/carrier_accounts/${carrierAccountId}`,
-						);
+						)) as any;
 					}
 
 					if (operation === 'getAll') {
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
 
 						if (returnAll) {
-							const response = await easyPostApiRequest.call(this, 'GET', '/carrier_accounts');
+							const response = (await easyPostApiRequest.call(this, 'GET', '/carrier_accounts')) as any;
 							responseData = ((response as IDataObject).carrier_accounts as IDataObject[]) || (response as unknown as IDataObject[]) || [];
 						} else {
 							const limit = this.getNodeParameter('limit', i) as number;
-							const response = await easyPostApiRequest.call(this, 'GET', '/carrier_accounts');
+							const response = (await easyPostApiRequest.call(this, 'GET', '/carrier_accounts')) as any;
 							const accounts = ((response as IDataObject).carrier_accounts as IDataObject[]) || (response as unknown as IDataObject[]) || [];
 							responseData = accounts.slice(0, limit);
 						}
@@ -1117,12 +1121,12 @@ export class EasyPost implements INodeType {
 							(body.carrier_account as IDataObject).credentials = creds;
 						}
 
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'PUT',
 							`/carrier_accounts/${carrierAccountId}`,
 							body,
-						);
+						)) as any;
 					}
 
 					if (operation === 'delete') {
@@ -1150,17 +1154,17 @@ export class EasyPost implements INodeType {
 							(body.webhook as IDataObject).webhook_secret = webhookSecret;
 						}
 
-						responseData = await easyPostApiRequest.call(this, 'POST', '/webhooks', body);
+						responseData = (await easyPostApiRequest.call(this, 'POST', '/webhooks', body)) as any;
 					}
 
 					if (operation === 'get') {
 						const webhookId = this.getNodeParameter('webhookId', i) as string;
-						responseData = await easyPostApiRequest.call(this, 'GET', `/webhooks/${webhookId}`);
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/webhooks/${webhookId}`)) as any;
 					}
 
 					if (operation === 'getAll') {
 						const returnAll = this.getNodeParameter('returnAll', i) as boolean;
-						const response = await easyPostApiRequest.call(this, 'GET', '/webhooks');
+						const response = (await easyPostApiRequest.call(this, 'GET', '/webhooks')) as any;
 						const webhooks = (response.webhooks as IDataObject[]) || [];
 
 						if (returnAll) {
@@ -1185,12 +1189,12 @@ export class EasyPost implements INodeType {
 							(body.webhook as IDataObject).webhook_secret = webhookSecret;
 						}
 
-						responseData = await easyPostApiRequest.call(
+						responseData = (await easyPostApiRequest.call(
 							this,
 							'PATCH',
 							`/webhooks/${webhookId}`,
 							body,
-						);
+						)) as any;
 					}
 
 					if (operation === 'delete') {
@@ -1200,13 +1204,38 @@ export class EasyPost implements INodeType {
 					}
 				}
 
+				// ===== EVENT OPERATIONS =====
+				if (resource === 'event') {
+					if (operation === 'getEvent') {
+						const eventId = this.getNodeParameter('eventId', i) as string;
+						responseData = (await easyPostApiRequest.call(this, 'GET', `/events/${eventId}`)) as any;
+					}
+
+					if (operation === 'listEvents') {
+						const beforeId = this.getNodeParameter('beforeId', i, '') as string;
+						const afterId = this.getNodeParameter('afterId', i, '') as string;
+						const startDatetime = this.getNodeParameter('startDatetime', i, '') as string;
+						const endDatetime = this.getNodeParameter('endDatetime', i, '') as string;
+						const pageSize = this.getNodeParameter('pageSize', i, 20) as number;
+
+						const qs: IDataObject = {};
+						if (beforeId) qs.before_id = beforeId;
+						if (afterId) qs.after_id = afterId;
+						if (startDatetime) qs.start_datetime = startDatetime;
+						if (endDatetime) qs.end_datetime = endDatetime;
+						if (pageSize) qs.page_size = pageSize;
+
+						responseData = (await easyPostApiRequest.call(this, 'GET', '/events', {}, qs)) as any;
+					}
+				}
+
 				const executionData = this.helpers.constructExecutionMetaData(
 					this.helpers.returnJsonArray(responseData as IDataObject),
 					{ itemData: { item: i } },
 				);
 
 				returnData.push(...executionData);
-			} catch (error) {
+			} catch (error: any) {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: (error as Error).message } });
 					continue;
